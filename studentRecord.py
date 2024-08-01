@@ -70,6 +70,39 @@ class studentScore:
             else:
                 print("Invalid input. Enter correct choice")
 
+    def calculate_average(self):
+        """
+        Calculate and add the average score for each student to the CSV file.
+        """
+        try:
+            with open(self.csv_file, "r") as file:
+                read = csv.DictReader(file)
+                field = read.fieldnames
+
+                if "Average" not in field:
+                    field.append("Average")
+
+                rows = []
+                for element in read:
+                    mark1 = float(element["english"])
+                    mark2 = float(element["maths"])
+                    mark3 = float(element["science"])
+                    avg = (mark1 + mark2 + mark3) / 3
+
+                    element["Average"] = round(avg, 2)
+                    rows.append(element)
+
+            with open(self.csv_file, "w", newline="") as file:
+                write = csv.DictWriter(file, fieldnames=field)
+                write.writeheader()
+                write.writerows(rows)
+
+            print("Average calculated successfully")
+
+        except Exception as e:
+            print("File not found")
+            exit()
+
     def mainMenu(self):
         """
         Display the main menu and handle user input.
@@ -78,7 +111,8 @@ class studentScore:
             print("\n-----Main Menu-----")
             print("1. Retrieve Data")
             print("2. Store Student record")
-            print("3. Exit")
+            print("3. Calculate Average")
+            print("4. Exit")
             choice = int(input("Enter choice: "))
 
             if choice == 1:
@@ -89,6 +123,8 @@ class studentScore:
             elif choice == 2:
                 self.StoreStudentScore()
             elif choice == 3:
+                self.calculate_average()
+            elif choice == 4:
                 exit()
             else:
                 print("Enter correct choice")
