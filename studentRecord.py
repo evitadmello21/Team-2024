@@ -1,5 +1,6 @@
 import csv
 
+
 class studentScore:
     def __init__(self, csv_file):
         self.csv_file = csv_file
@@ -103,6 +104,33 @@ class studentScore:
             print("File not found")
             exit()
 
+    def displayAll(self, header, ascending=True):
+        """
+        Display all student records sorted by a specified header.
+        """
+        try:
+            with open(self.csv_file, "r") as file:
+                read = csv.DictReader(file)
+                field = read.fieldnames
+
+                if header not in field:
+                    print(f"Header {header} not found")
+                    return
+
+                rows = list(read)
+                for row in rows:
+                    if row[header].isdigit():
+                        row[header] = int(row[header])
+
+                rows.sort(key=lambda row: row[header], reverse=not ascending)
+
+            for row in rows:
+                print(row)
+
+        except Exception as e:
+            print("File not found")
+            exit()
+
     def mainMenu(self):
         """
         Display the main menu and handle user input.
@@ -112,7 +140,8 @@ class studentScore:
             print("1. Retrieve Data")
             print("2. Store Student record")
             print("3. Calculate Average")
-            print("4. Exit")
+            print("4. Display all")
+            print("5. Exit")
             choice = int(input("Enter choice: "))
 
             if choice == 1:
@@ -125,9 +154,16 @@ class studentScore:
             elif choice == 3:
                 self.calculate_average()
             elif choice == 4:
+                header = input("Enter header: ")
+                ascending = input("Ascending order (True/False): ").capitalize()
+                ascending = ascending in ["True", "1"]
+                self.displayAll(header, ascending)
+            elif choice == 5:
+                print("Exiting...")
                 exit()
             else:
                 print("Enter correct choice")
+
 
 f = studentScore('student_data.csv')
 f.mainMenu()
