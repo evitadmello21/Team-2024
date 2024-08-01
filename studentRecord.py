@@ -1,11 +1,16 @@
 import csv
+import logging
 
+logging.basicConfig(level=logging.DEBUG,
+                    filename="student_record.log",
+                    format="%(asctime)s, %(levelname)s, %(message)s")
 
 class studentScore:
     def __init__(self, csv_file):
         self.csv_file = csv_file
 
     def RetriveStudentScore(self, rollno):
+        logging.debug("Entering RetrieveStudentScore method")
         """
         Retrieve and return student data for given roll number.
         """
@@ -15,15 +20,19 @@ class studentScore:
 
                 for element in read:
                     if element["Rollno"] == rollno:
+                        logging.info(f"Retrieved record for Roll number {rollno} successfully")
                         return element
 
+            logging.warning(f"No records found for Roll number {rollno}")
             print(f"No records found for Roll number {rollno}")
 
         except FileNotFoundError:
+            logging.error(f"File not found {self.csv_file}")
             print("File not found")
             exit()
 
     def StoreStudentScore(self):
+        logging.debug("Entering StoreStudentScore method")
         """
         Collect student data from user input and store it in the CSV file.
         """
@@ -52,6 +61,7 @@ class studentScore:
                 missing_value = [key for key, value in student_record.items() if not value]
 
                 if missing_value:
+                    logging.warning(f"Failed to store data, following parameters missing: {','.join(missing_value)}")
                     print(f"Failed to store data, following parameters missing: {','.join(missing_value)}")
 
                 else:
@@ -60,18 +70,22 @@ class studentScore:
                             field = ['Rollno', 'name', 'english', 'maths', 'science']
                             write = csv.DictWriter(file, fieldnames=field)
                             write.writerow(student_record)
+                            logging.info("Record inserted successfully")
                             print("Record Inserted Successfully.")
 
                     except Exception as e:
+                        logging.error(f"File not found {e}")
                         print("File not found")
                         exit()
 
             elif choice == 2:
                 self.mainMenu()
             else:
+                logging.warning("Invalid choice entered")
                 print("Invalid input. Enter correct choice")
 
     def calculate_average(self):
+        logging.debug("Entering calculate_average method")
         """
         Calculate and add the average score for each student to the CSV file.
         """
@@ -98,13 +112,16 @@ class studentScore:
                 write.writeheader()
                 write.writerows(rows)
 
+            logging.info("Average calculated successfully")
             print("Average calculated successfully")
 
         except Exception as e:
+            logging.error(f"File not found {e}")
             print("File not found")
             exit()
 
     def displayAll(self, header, ascending=True):
+        logging.debug("Entering displayAll method")
         """
         Display all student records sorted by a specified header.
         """
@@ -114,6 +131,7 @@ class studentScore:
                 field = read.fieldnames
 
                 if header not in field:
+                    logging.error(f"Header {header} not found")
                     print(f"Header {header} not found")
                     return
 
@@ -128,9 +146,9 @@ class studentScore:
                 print(row)
 
         except Exception as e:
+            logging.error(f"File not found {e}")
             print("File not found")
             exit()
-
 
     def mainMenu(self):
         """
@@ -163,6 +181,7 @@ class studentScore:
                 print("Exiting...")
                 exit()
             else:
+                logging.warning("Invalid choice entered")
                 print("Enter correct choice")
 
 
