@@ -1,0 +1,9 @@
+2024-08-01 16:09:27,452, DEBUG, Entering RetrieveStudentScore method
+2024-08-01 16:09:27,453, WARNING, No records found for Roll number 12
+2024-08-01 16:09:32,740, DEBUG, Entering RetrieveStudentScore method
+2024-08-01 16:09:32,740, INFO, Retrieved record for Roll number 11 successfully
+2024-08-01 16:09:33,907, DEBUG, Entering StoreStudentScore method
+2024-08-01 16:09:45,530, INFO, Record inserted successfully
+2024-08-01 16:09:52,718, DEBUG, Entering calculate_average method
+2024-08-01 16:09:52,727, INFO, Average calculated successfully
+2024-08-01 16:09:58,005, DEBUG, Entering displayAll method
