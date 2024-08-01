@@ -131,6 +131,7 @@ class studentScore:
             print("File not found")
             exit()
 
+
     def mainMenu(self):
         """
         Display the main menu and handle user input.
